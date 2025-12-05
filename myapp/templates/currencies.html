@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Курсы валют</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>Валюты</h1>
+  <a href="/">Главная</a>
+
+  <form method="get" action="/currencies" style="display:inline-block; margin-left: 1em;">
+    <button type="submit" name="refresh" value="1">Обновить</button>
+  </form>
+
+  {% if refreshed %}
+    <p><em>Курсы обновлены.</em></p>
+  {% endif %}
+
+  {% if not currencies %}
+    <p><strong>Курсы ещё не загружены. Нажмите «Обновить» для получения актуальных данных.</strong></p>
+  {% endif %}
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>NumCode</th><th>CharCode</th><th>Название</th><th>Значение</th><th>Номинал</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in currencies %}
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.num_code }}</td>
+        <td>{{ item.char_code }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ '%.4f' | format(item.per_unit) }}</td>
+        <td>{{ item.nominal }}</td>
+        <td>
+          <a href="/subscribe?user_id=1&currency_id={{ item.id }}">Подписаться (user 1)</a>
+          &nbsp;|&nbsp;
+          <a href="/currency/delete?id={{ item.id }}" onclick="return confirm('Удалить валюту?')">Удалить</a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

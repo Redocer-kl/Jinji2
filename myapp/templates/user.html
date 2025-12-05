@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Пользователь {{ user.name }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Пользователь: {{ user.name }}</h1>
+  <p>ID: {{ user.id }}</p>
+  <h2>Подписки</h2>
+  {% if subscriptions %}
+    <ul>
+      {% for s in subscriptions %}
+        <li>
+          {{ s.char_code }} — {{ s.name }} ({{ '%.4f' | format(s.per_unit if s.per_unit is defined else (s.value / s.nominal)) }})
+          <!-- Отписаться -->
+          <a href="/unsubscribe?uc_id={{ s.uc_id }}" onclick="return confirm('Отписаться?')">Отписаться</a>
+          <!-- Контейнер для графика -->
+          <div style="width:600px; height:300px;">
+            <canvas id="chart-{{ s.id }}"></canvas>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Нет подписок</p>
+  {% endif %}
+
+  <a href="/users">Назад</a>
+
+<script>
+// Для каждой подписки запросим историю и отрисуем график.
+document.addEventListener('DOMContentLoaded', function() {
+  const subs = document.querySelectorAll('[id^="chart-"]');
+  subs.forEach(function(canvas) {
+    const cid = canvas.id.replace('chart-', '');
+    const url = `/currency/history?id=${encodeURIComponent(cid)}&months=3`;
+    fetch(url).then(resp => resp.json()).then(data => {
+      const labels = data.map(d => new Date(d.recorded_at).toLocaleString());
+      const values = data.map(d => d.per_unit);
+      new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: cid + ' — динамика (последние 3 мес)',
+            data: values,
+            tension: 0.2,
+            fill: false,
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: { display: true },
+            y: { display: true }
+          }
+        }
+      });
+    }).catch(err => {
+      console.error('Ошибка загрузки истории для', cid, err);
+    });
+  });
+});
+</script>
+</body>
+</html>

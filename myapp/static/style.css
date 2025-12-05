@@ -1,0 +1,148 @@
+/* Основные стили */
+:root {
+    --bg: #f7f9fb;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent: #0ea5a4;
+    --border: #e6e9ef;
+    --text: #0f172a;
+}
+
+* {
+    box-sizing: border-box
+}
+
+body {
+    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    margin: 16px;
+    background: linear-gradient(180deg, var(--bg), #ffffff);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+header,
+nav {
+    display: flex;
+    align-items: center;
+    gap: 12px
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.04);
+}
+
+/* Навигация */
+nav a {
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--accent)
+}
+
+nav a.active {
+    background: #e6fffb
+}
+
+/* Таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px
+}
+
+th,
+td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left
+}
+
+th {
+    background: #fbfdfe;
+    font-weight: 600
+}
+
+tr:hover td {
+    background: linear-gradient(90deg, rgba(14, 165, 164, 0.03), transparent)
+}
+
+/* Кнопки и формы */
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    cursor: pointer
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: white;
+    border-color: transparent
+}
+
+.btn:active {
+    transform: translateY(1px)
+}
+
+form.inline {
+    display: inline-block
+}
+
+/* Секция подписок и графики */
+.subscriptions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 12px
+}
+
+.subscription {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, #fff, #fbfbff)
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 700px;
+    height: 320px
+}
+
+/* Адаптив */
+@media (min-width:760px) {
+    .subscriptions {
+        grid-template-columns: 1fr 1fr
+    }
+}
+
+@media (max-width:480px) {
+    body {
+        margin: 8px
+    }
+
+    th,
+    td {
+        padding: 8px
+    }
+}
