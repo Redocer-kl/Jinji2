@@ -2,6 +2,8 @@
 
 A lightweight, dependency-minimal web application designed to track currency rates, manage user subscriptions, and visualize historical data.
 
+The goal of this project was to understand the underlying mechanics of web servers by implementing routing and templating from scratch
+
 ## Key Features
 - **Custom Web Server**: Built using native Python `http.server` (no heavy frameworks).
 - **Relational DB**: SQLite integration with a focus on pure SQL queries for CRUD operations.
